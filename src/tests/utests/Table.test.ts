@@ -1,11 +1,14 @@
 import { expect } from "chai";
 import { Database } from "../../database/Database";
 import { IDatabase } from "../../database/IDatabase";
+import { MemoryStorage } from "../../storage/MemoryStorage";
+import { StorageFactory } from "../../storage/StorageFactory";
 import { ITable } from "../../table/ITable";
 import { gt } from "../../where/gt";
 import { IPerson } from "../model/IPerson";
 
 describe("Table", () => {
+  StorageFactory.storageType = MemoryStorage;
   let db: IDatabase;
   let Person: ITable<IPerson>;
 

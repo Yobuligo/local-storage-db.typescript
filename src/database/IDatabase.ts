@@ -6,6 +6,9 @@ import { IdType } from "../types/IdType";
  * An implementation of this interface represents a database.
  */
 export interface IDatabase {
+  /**
+   * Defines a new table with the given name {@link tableName}
+   */
   define<TRecord extends IRecord<IdType>>(
     tableName: string
   ): ITableBuilder<TRecord>;
