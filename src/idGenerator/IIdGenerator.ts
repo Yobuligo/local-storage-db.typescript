@@ -5,5 +5,8 @@ import { IdType } from "../types/IdType";
  * The id type is of the given type {@link T}.
  */
 export interface IIdGenerator<T extends IdType> {
+  /**
+   * Generates the next id.
+   */
   next(): T;
 }
