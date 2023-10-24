@@ -1,5 +1,4 @@
 import { MetaTable } from "../table/MetaTable";
-import { eq } from "../where/Operator";
 import { IAutoIncrement } from "./IAutoIncrement";
 
 export class AutoIncrement implements IAutoIncrement {
@@ -22,7 +21,7 @@ export class AutoIncrement implements IAutoIncrement {
     const tableMeta = this.metaTable.select({
       limit: 1,
       where: {
-        tableName: eq(this.tableName),
+        tableName: this.tableName,
       },
     })[0];
     return tableMeta?.autoIncrement ?? 0;
@@ -34,7 +33,7 @@ export class AutoIncrement implements IAutoIncrement {
         autoIncrement: this.value,
         tableName: this.tableName,
       },
-      { tableName: eq(this.tableName) }
+      { tableName: this.tableName }
     );
   }
 }
