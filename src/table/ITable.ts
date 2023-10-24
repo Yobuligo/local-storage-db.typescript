@@ -99,10 +99,10 @@ export interface ITable<TRecord extends IRecord<IdType>> {
    *
    * @example
    * // updates all records by setting firstname to Stacey
-   * Person.update({ firstname: "Stacey" });
+   * const updateResult = Person.update({ firstname: "Stacey" });
    *
    * // updates all records by setting firstname to Stacey and lastname to Starfish, which have an id lower than 10.
-   * Person.update({ firstname: "Stacey", lastname: "Starfish" }, { id: lt(10) });
+   * const updateResult = Person.update({ firstname: "Stacey", lastname: "Starfish" }, { id: lt(10) });
    */
   update(
     record: Partial<IRecordDetails<TRecord>>,

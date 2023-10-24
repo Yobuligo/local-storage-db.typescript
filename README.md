@@ -57,3 +57,91 @@ const Person = db
   .define<IPerson>("persons")
   .build({ timestamps: true, uuid: true });
 ```
+
+## Insert records
+
+Inserts can be executed via function insert at the table.
+
+Insert a new record to table Person and get the person object as return.
+
+```
+const person = Person.insert({ firstname: "Stacey", lastname: "Starfish" });
+```
+
+Insert new records and get the person objects as return.
+
+```
+const persons = Person.insert([
+  { firstname: "Alex", lastname: "Ant" },
+  { firstname: "Stacey", lastname: "Starfish" },
+]);
+```
+
+## Select records
+
+Selects can be executed via function select at the table.
+
+Return all records of table Person:
+
+```
+const persons = Person.select();
+```
+
+Return all records which match the where clause:
+
+```
+const persons = Person.select({ where: { id: 10 } });
+```
+
+Return a max limit of records which match the where clause
+
+```
+const persons = Person.select({ limit: 3, where: { firstname: "Stacey" } });
+```
+
+## Update records
+
+Updates can be executed via function update at the table.
+
+Updates all records by setting firstname to Stacey.
+
+```
+const updateResult = Person.update({ firstname: "Stacey" });
+```
+
+Updates all records by setting firstname to Stacey and lastname to Starfish, which have an id lower than 10 or update nothing if not found.
+
+```
+const updateResult = Person.update(
+  { firstname: "Stacey", lastname: "Starfish" },
+  { id: lt(10) }
+);
+```
+
+## Delete records
+
+Deletes can be executed via function delete at the table.
+
+Deletes all records from table Person.
+
+```
+Person.delete();
+```
+
+Deletes only record with id 12 or nothing
+
+```
+Person.delete({ id: 12 });
+```
+
+Deletes all records with id greater 10 or nothing
+
+```
+Person.delete({ id: gt(10) });
+```
+
+Deletes all records with id greater 10 and lastname Starfish or nothing
+
+```
+Person.delete({ id: gt(10), lastname: "Starfish" });
+```
