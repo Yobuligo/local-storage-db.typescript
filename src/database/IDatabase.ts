@@ -1,6 +1,5 @@
 import { IRecord } from "../record/IRecord";
-import { ITable } from "../table/ITable";
-import { ITableConfig } from "../table/ITableConfig";
+import { ITableBuilder } from "../table/ITableBuilder";
 import { IdType } from "../types/IdType";
 
 /**
@@ -8,9 +7,8 @@ import { IdType } from "../types/IdType";
  */
 export interface IDatabase {
   define<TRecord extends IRecord<IdType>>(
-    tableName: string,
-    config?: ITableConfig
-  ): ITable<TRecord>;
+    tableName: string
+  ): ITableBuilder<TRecord>;
 
   /**
    * Drops the table with the given {@link tableName}

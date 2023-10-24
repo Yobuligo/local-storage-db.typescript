@@ -1,12 +1,11 @@
 import { AutoIncrement } from "../idGenerator/AutoIncrement";
 import { IRecord } from "../record/IRecord";
 import { StorageFactory } from "../storage/StorageFactory";
-import { ITable } from "../table/ITable";
-import { ITableConfig } from "../table/ITableConfig";
+import { ITableBuilder } from "../table/ITableBuilder";
 import { ITableMeta } from "../table/ITableMeta";
 import { MetaTable } from "../table/MetaTable";
-import { Table } from "../table/Table";
 import { IdType } from "../types/IdType";
+import { TableBuilder } from "./../table/TableBuilder";
 import { IDatabase } from "./IDatabase";
 
 export class Database implements IDatabase {
@@ -24,13 +23,12 @@ export class Database implements IDatabase {
   }
 
   define<TRecord extends IRecord<IdType>>(
-    tableName: string,
-    config?: ITableConfig | undefined
-  ): ITable<TRecord> {
+    tableName: string
+  ): ITableBuilder<TRecord> {
     const tableFileName = this.createTableFileName(tableName);
     const tableStorage = StorageFactory.create<TRecord>(tableFileName);
     const idGenerator = new AutoIncrement(this.metaTable, tableFileName);
-    return new Table(tableName, tableStorage, idGenerator, config);
+    return new TableBuilder(tableName, tableStorage, idGenerator);
   }
 
   drop(tableName: string): boolean {

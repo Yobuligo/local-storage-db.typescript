@@ -7,8 +7,14 @@ interface IPerson extends IRecord<number> {
 }
 
 const db = new Database("retrospective");
-const Person = db.define<IPerson>("persons");
+const Person = db.define<IPerson>("persons").build({ timestamps: false });
 let persons = Person.select();
-const person = Person.insert({ firstname: "Stacey", lastname: "Starfish" });
-persons = Person.select();
-debugger
+let person = Person.insert({ firstname: "Stacey", lastname: "Starfish" });
+person = Person.insert({ firstname: "Stacey", lastname: "Starfish" });
+person = Person.insert({ firstname: "Stacey", lastname: "Starfish" });
+persons = Person.select({
+  where: {
+    lastname: "Starfish",
+  },
+});
+debugger;
