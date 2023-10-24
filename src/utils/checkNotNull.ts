@@ -1,4 +1,4 @@
-import { ErrorReason } from "../../types/ErrorReason";
+import { ErrorReason } from "../types/ErrorReason";
 import { createError } from "./error/createError";
 
 /**

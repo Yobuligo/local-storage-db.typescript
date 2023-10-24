@@ -1,4 +1,4 @@
-import { ErrorReason } from "../../../types/ErrorReason";
+import { ErrorReason } from "../../types/ErrorReason";
 
 /**
  * This function is responsible for creating an error. There are the following possibilities:
