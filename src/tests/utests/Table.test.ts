@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { Database } from "../../database/Database";
 import { IDatabase } from "../../database/IDatabase";
 import { ITable } from "../../table/ITable";
+import { gt } from "../../where/gt";
 import { IPerson } from "../model/IPerson";
 
 describe("Table", () => {
@@ -49,6 +50,16 @@ describe("Table", () => {
       expect(persons[1].id).equals(3);
     });
 
+    it("deletes all restricted by where with several conditions", () => {
+      Person.insert({ firstname: "1", lastname: "1" });
+      Person.insert({ firstname: "1", lastname: "2" });
+      Person.insert({ firstname: "1", lastname: "3" });
+      Person.delete({ firstname: "1", id: gt(1) });
+      const persons = Person.select();
+      expect(persons.length).equals(1);
+      expect(persons[0].id).equals(1);
+    });
+
     it("deletes nothing if not found", () => {
       insertPersons();
       Person.delete({ id: 10 });
@@ -57,6 +68,23 @@ describe("Table", () => {
   });
 
   describe("insert", () => {
+    it("adds object to table", () => {
+      Person.insert({ firstname, lastname });
+      const persons = Person.select();
+      expect(persons.length).equals(1);
+      expect(persons[0].firstname).equals(firstname);
+      expect(persons[0].lastname).equals(lastname);
+    });
+
+    it("appends object to table and provides auto incremented id", () => {
+      insertPersons();
+      const person = Person.insert({ firstname: "1.1", lastname: "1.2" });
+      const persons = Person.select();
+      expect(persons.length).equals(4);
+      expect(persons[3].firstname).equals("1.1");
+      expect(persons[3].lastname).equals("1.2");
+    });
+
     it("returns created object", () => {
       const person = Person.insert({ firstname: "123", lastname: "abc" });
       expect(person).not.equals(undefined);
@@ -65,6 +93,45 @@ describe("Table", () => {
     it("returns created object and sets id", () => {
       const person = Person.insert({ firstname: "123", lastname: "abc" });
       expect(person.id).equals(1);
+    });
+
+    it("adds multiple objects to table", () => {
+      Person.insert([
+        { firstname: "1.1", lastname: "1.2" },
+        { firstname: "2.1", lastname: "2.2" },
+      ]);
+      const persons = Person.select();
+      expect(persons.length).equals(2);
+      expect(persons[0].firstname).equals("1.1");
+      expect(persons[0].lastname).equals("1.2");
+      expect(persons[1].firstname).equals("2.1");
+      expect(persons[1].lastname).equals("2.2");
+    });
+
+    it("appends multiple objects to table", () => {
+      insertPersons();
+      Person.insert([
+        { firstname: "1.1", lastname: "1.2" },
+        { firstname: "2.1", lastname: "2.2" },
+      ]);
+      const persons = Person.select();
+      expect(persons.length).equals(5);
+      expect(persons[3].firstname).equals("1.1");
+      expect(persons[3].lastname).equals("1.2");
+      expect(persons[4].firstname).equals("2.1");
+      expect(persons[4].lastname).equals("2.2");
+    });
+
+    it("returns created objects and sets id", () => {
+      const persons = Person.insert([
+        { firstname: "1.1", lastname: "1.2" },
+        { firstname: "2.1", lastname: "2.2" },
+      ]);
+      expect(persons.length).equals(2);
+      expect(persons[0].firstname).equals("1.1");
+      expect(persons[0].lastname).equals("1.2");
+      expect(persons[1].firstname).equals("2.1");
+      expect(persons[1].lastname).equals("2.2");
     });
   });
 
@@ -86,7 +153,7 @@ describe("Table", () => {
       expect(persons.length).equals(1);
     });
 
-    it("returns by where multiple restricted entries", () => {
+    it("returns by where restricted entries with several conditions", () => {
       Person.insert({ firstname: "1", lastname: "1" });
       Person.insert({ firstname: "1", lastname: "2" });
       Person.insert({ firstname: "1", lastname: "3" });
