@@ -1,5 +1,5 @@
 {
-  "name": "local-storage-db.typescript",
+  "name": "local-storage-db",
   "version": "1.0.0",
   "description": "Local Storage DB",
   "main": "dist/index.js",
