@@ -1,4 +1,5 @@
 import { IIdGenerator } from "../idGenerator/IIdGenerator";
+import { UUIDGenerator } from "../idGenerator/UUIDGenerator";
 import { IRecord } from "../record/IRecord";
 import { IStorage } from "../storage/IStorage";
 import { IdType } from "../types/IdType";
@@ -17,11 +18,11 @@ export class TableBuilder<TRecord extends IRecord<IdType>>
   ) {}
 
   build(config?: ITableConfig | undefined): ITable<TRecord> {
-    return new Table(
-      this.tableName,
-      this.tableStorage,
-      this.idGenerator,
-      config
-    );
+    let idGenerator = this.idGenerator;
+    if (config && config.uuid) {
+      idGenerator = UUIDGenerator;
+    }
+
+    return new Table(this.tableName, this.tableStorage, idGenerator, config);
   }
 }

@@ -8,6 +8,6 @@ import { Table } from "./Table";
  */
 export class MetaTable extends Table<ITableMeta> {
   constructor(tableName: string, storage: IStorage<ITableMeta>) {
-    super(tableName, storage, new UUIDGenerator());
+    super(tableName, storage, UUIDGenerator);
   }
 }

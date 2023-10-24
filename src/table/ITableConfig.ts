@@ -8,4 +8,12 @@ export interface ITableConfig {
    * If {@link timestamps} is undefined created and changedAt are also handled automatically.
    */
   timestamps?: boolean;
+
+  /**
+   * Returns if uuids should be used as id instead of auto incremented number values. The generated uuids have the following format:
+   *
+   * @example
+   * 06ddd09b-c730-4ffd-9db9-9e433aa74489
+   */
+  uuid?: boolean;
 }
