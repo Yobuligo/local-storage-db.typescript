@@ -2,11 +2,12 @@
   "name": "local-storage-db.typescript",
   "version": "1.0.0",
   "description": "Local Storage DB",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "mocha ./dist/tests/**/*.js"
   },
-  "author": "",
+  "author": "Yobuligo",
   "license": "ISC",
   "dependencies": {
     "@types/uuid": "^9.0.6",
@@ -17,5 +18,12 @@
     "@types/mocha": "^10.0.3",
     "chai": "^4.3.10",
     "mocha": "^10.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yobuligo/local-storage-db.typescript.git"
+  },
+  "files": [
+    "/dist"
+  ]
 }
