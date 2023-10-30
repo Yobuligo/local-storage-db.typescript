@@ -145,3 +145,6 @@ Deletes all records with id greater 10 and lastname Starfish or nothing
 ```
 Person.delete({ id: gt(10), lastname: "Starfish" });
 ```
+
+TODOs
+- adding relations
