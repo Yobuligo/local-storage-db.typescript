@@ -148,3 +148,4 @@ Person.delete({ id: gt(10), lastname: "Starfish" });
 
 TODOs
 - adding relations
+- Boards.notes.add(board, note)
