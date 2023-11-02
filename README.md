@@ -147,5 +147,5 @@ Person.delete({ id: gt(10), lastname: "Starfish" });
 ```
 
 TODOs
-- adding relations
+- adding relations (define them in build())
 - Boards.notes.add(board, note)
