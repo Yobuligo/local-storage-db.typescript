@@ -1,3 +1,4 @@
+import { createFuzzyRegExp } from "../utils/createFuzzyRegExp";
 import { IPredicate } from "./IPredicate";
 
 /**
@@ -5,7 +6,7 @@ import { IPredicate } from "./IPredicate";
  * which compares if the parameter {@link operand} of the returned function is like {@link value}.
  */
 export function like<T>(value: T): IPredicate<T> {
-  const regex = new RegExp(`/${String(value)}/`);
+  const regex = createFuzzyRegExp(String(value));
   return (operand: T) => {
     if (String(operand).match(regex)) {
       return true;
