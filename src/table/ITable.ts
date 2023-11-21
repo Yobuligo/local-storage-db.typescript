@@ -42,6 +42,11 @@ export interface ITable<TRecord extends IRecord<IdType>> {
   delete(where?: IWhere<TRecord>): void;
 
   /**
+   * Deletes a given {@link record} by its id
+   */
+  delete(record: TRecord): void;
+
+  /**
    * Inserts a new {@link record} to this table and returns the created object.
    * Each newly created record gets an id. Depending on the {@link ITableConfig} an auto incremented id or a uuid.
    * Each newly created record gets an createdAt and changedAt property if customized in the {@link ITableConfig}, which was provided while defining the table.
