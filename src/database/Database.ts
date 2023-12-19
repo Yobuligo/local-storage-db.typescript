@@ -1,6 +1,7 @@
 import { AutoIncrement } from "../idGenerator/AutoIncrement";
 import { IRecord } from "../record/IRecord";
 import { StorageFactory } from "../storage/StorageFactory";
+import { isHaveStorage } from "../storage/isHaveStorage";
 import { ITable } from "../table/ITable";
 import { ITableBuilder } from "../table/ITableBuilder";
 import { ITableMeta } from "../table/ITableMeta";
@@ -32,11 +33,16 @@ export class Database implements IDatabase {
     return new TableBuilder(tableName, this, tableStorage, idGenerator);
   }
 
-  drop(table: ITable<any>): boolean {
-    if ()
-    this.dropTable(tableName);
-    this.deleteTableDefinition(tableName);
-    return true;
+  drop<TRecord extends IRecord<IdType>>(table: ITable<TRecord>): boolean {
+    if (isHaveStorage(table)) {
+      table.storage.delete();
+      this.deleteTableDefinition(table);
+      return true;
+    } else {
+      throw new Error(
+        `Error while dropping table. Table is not valid. Unable to delete table data from storage.`
+      );
+    }
   }
 
   /**
@@ -47,18 +53,12 @@ export class Database implements IDatabase {
   }
 
   /**
-   * Drops the table with the given {@link tableName}.
-   */
-  private dropTable(tableName: string) {
-    const tableFileName = this.createTableFileName(tableName);
-    const tableStorage = StorageFactory.create<any>(tableFileName);
-    tableStorage.delete();
-  }
-
-  /**
    * Deletes the table definition for the given {@link tableName}.
    */
-  private deleteTableDefinition(tableName: string) {
-    this.metaTable.delete({ tableName: tableName });
+  private deleteTableDefinition<TRecord extends IRecord<IdType>>(
+    table: ITable<TRecord>
+  ) {
+    const tableName = this.createTableFileName(table.name);
+    this.metaTable.delete({ tableName });
   }
 }
