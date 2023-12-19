@@ -89,6 +89,14 @@ export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
     if (options && options.limit !== undefined) {
       records = records.slice(0, options.limit);
     }
+
+    if (
+      options &&
+      options.orderBy !== undefined &&
+      Object.keys(options.orderBy).length > 0
+    ) {
+      records = RecordUtils.orderBy(records, options.orderBy);
+    }
     return records;
   }
 

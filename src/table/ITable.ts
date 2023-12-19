@@ -100,6 +100,9 @@ export interface ITable<TRecord extends IRecord<IdType>> extends IDroppable {
    *
    * // return all records which match the where clause
    * Person.select({ where: { id: 10 } });
+   * 
+   * // return all records which match the where clause sorted by id
+   * Person.select({ where: { id: 10 }, orderBy: { id: SortOrder.ASC } });
    *
    * // return a max limit of records which match the where clause
    * Person.select({ limit: 3, where: { firstname: "Stacey" } });

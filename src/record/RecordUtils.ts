@@ -1,7 +1,9 @@
 import { IIdGenerator } from "../idGenerator/IIdGenerator";
 import { ITableConfig } from "../table/ITableConfig";
 import { IdType } from "../types/IdType";
+import { SortOrder } from "../types/SortOrder";
 import { error } from "../utils/error/error";
+import { ISortOrder } from "../where/ISortOrder";
 import { IWhere } from "../where/IWhere";
 import { IRecord } from "./IRecord";
 
@@ -81,6 +83,40 @@ class RecordUtilsDefault {
     where: IWhere<T>
   ): T[] {
     return records.filter((record) => !this.doesMatchFilter(record, where));
+  }
+
+  /**
+   * Returns the given {@link records} sorted by the given {@link orderBy}.
+   */
+  orderBy<T extends IRecord<IdType>>(
+    records: T[],
+    orderBy: ISortOrder<T>
+  ): T[] {
+    return records.sort((a, b) => {
+      for (const propName in orderBy) {
+        const sortOrder = orderBy[propName];
+        const left = a[propName];
+        const right = b[propName];
+        if (sortOrder === SortOrder.ASC) {
+          if (left < right) {
+            return -1;
+          } else if (left > right) {
+            return 1;
+          } else {
+            // continue compare, this property is equal, but maybe not the next one
+          }
+        } else {
+          if (left > right) {
+            return -1;
+          } else if (left < right) {
+            return 1;
+          } else {
+            // continue compare, this property is equal, but maybe not the next one
+          }
+        }
+      }
+      return 0;
+    });
   }
 
   /**
