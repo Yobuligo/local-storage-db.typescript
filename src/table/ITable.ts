@@ -42,9 +42,10 @@ export interface ITable<TRecord extends IRecord<IdType>> {
   delete(where?: IWhere<TRecord>): void;
 
   /**
-   * Deletes a given {@link record} by its id
+   * Drops the current table with all its data.
+   * The table will be removed from the underlying database.
    */
-  delete(record: TRecord): void;
+  drop(): void;
 
   /**
    * Inserts a new {@link record} to this table and returns the created object.

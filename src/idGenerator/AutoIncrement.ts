@@ -17,6 +17,10 @@ export class AutoIncrement implements IAutoIncrement {
     return this.value;
   }
 
+  /**
+   * Reads the current auto increment value.
+   * If the table is not yet registered 0 is returned.
+   */
   private readAutoIncrement(): number {
     const tableMeta = this.metaTable.select({
       limit: 1,

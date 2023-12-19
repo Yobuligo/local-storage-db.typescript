@@ -5,6 +5,7 @@ import { RecordUtils } from "../record/RecordUtils";
 import { ISelectOptions } from "../select/ISelectOptions";
 import { IStorage } from "../storage/IStorage";
 import { IdType } from "../types/IdType";
+import { Todo } from "../utils/Todo";
 import { IWhere } from "../where/IWhere";
 import { ITable } from "./ITable";
 import { ITableConfig } from "./ITableConfig";
@@ -39,6 +40,10 @@ export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
       records = RecordUtils.reduceRecords(records, where);
       this.storage.write(records);
     }
+  }
+
+  drop(): void {
+      Todo()
   }
 
   insert(record: IRecordDetails<TRecord>): TRecord;

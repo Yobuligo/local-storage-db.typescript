@@ -32,10 +32,31 @@ export class Database implements IDatabase {
   }
 
   drop(tableName: string): boolean {
-    throw new Error("Method not implemented.");
+    this.dropTable(tableName);
+    this.deleteTableDefinition(tableName);
+    return true;
   }
 
+  /**
+   * Creates a file name for the given {@link tableName}.
+   */
   private createTableFileName(tableName: string): string {
     return `${this.databaseFileName}.${tableName}`;
+  }
+
+  /**
+   * Drops the table with the given {@link tableName}.
+   */
+  private dropTable(tableName: string) {
+    const tableFileName = this.createTableFileName(tableName);
+    const tableStorage = StorageFactory.create<any>(tableFileName);
+    tableStorage.delete();
+  }
+
+  /**
+   * Deletes the table definition for the given {@link tableName}.
+   */
+  private deleteTableDefinition(tableName: string) {
+    this.metaTable.delete({ tableName: tableName });
   }
 }
