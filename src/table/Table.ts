@@ -47,7 +47,7 @@ export class Table<TRecord extends IRecord<IdType>>
   }
 
   drop(): void {
-    this.database.drop(this);
+    this.database.dropTable(this);
   }
 
   insert(record: IRecordDetails<TRecord>): TRecord;

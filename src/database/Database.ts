@@ -5,8 +5,8 @@ import { isHaveStorage } from "../storage/isHaveStorage";
 import { ITable } from "../table/ITable";
 import { ITableBuilder } from "../table/ITableBuilder";
 import { ITableMeta } from "../table/ITableMeta";
-import { MetaTable } from "../table/MetaTable";
 import { IdType } from "../types/IdType";
+import { MetaTable } from "./../table/MetaTable";
 import { TableBuilder } from "./../table/TableBuilder";
 import { IDatabase } from "./IDatabase";
 
@@ -33,7 +33,13 @@ export class Database implements IDatabase {
     return new TableBuilder(tableName, this, tableStorage, idGenerator);
   }
 
-  drop<TRecord extends IRecord<IdType>>(table: ITable<TRecord>): boolean {
+  drop(): boolean {
+    this.dropTables();
+    this.metaTable.delete();
+    return true;
+  }
+
+  dropTable<TRecord extends IRecord<IdType>>(table: ITable<TRecord>): boolean {
     if (isHaveStorage(table)) {
       table.storage.delete();
       this.deleteTableDefinition(table);
@@ -60,5 +66,16 @@ export class Database implements IDatabase {
   ) {
     const tableName = this.createTableFileName(table.name);
     this.metaTable.delete({ tableName });
+  }
+
+  /**
+   * Drops all tables of the database.
+   */
+  private dropTables() {
+    const tableMetas = this.metaTable.select();
+    tableMetas.forEach((tableMeta) => {
+      const table = this.define(tableMeta.tableName).build();
+      table.drop();
+    });
   }
 }
