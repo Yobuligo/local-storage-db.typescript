@@ -2,8 +2,7 @@
   "name": "@yobuligo/local-storage-db",
   "version": "1.0.0",
   "description": "Local Storage DB",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+
   "scripts": {
     "test": "mocha ./dist/tests/**/*.js"
   },

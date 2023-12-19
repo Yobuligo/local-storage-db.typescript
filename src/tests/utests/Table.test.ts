@@ -75,7 +75,6 @@ describe("Table", () => {
     it("deletes table data from storage", () => {
       insertPersons();
       Person.drop();
-      Person.count();
       expect(Person.count()).equals(0);
     });
 
