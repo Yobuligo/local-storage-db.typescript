@@ -34,6 +34,7 @@ Person.insert({ firstname: "Ilona", lastname: "Hoffmann" });
 
 const persons = Person.select({
   orderBy: { firstname: SortOrder.DESC, lastname: SortOrder.DESC },
+  where: { lastname: "Hoffmann" },
 });
 
 persons.forEach((person) =>

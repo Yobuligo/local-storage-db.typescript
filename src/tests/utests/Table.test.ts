@@ -5,6 +5,7 @@ import { MemoryStorage } from "../../storage/MemoryStorage";
 import { StorageFactory } from "../../storage/StorageFactory";
 import { ITable } from "../../table/ITable";
 import { ITableMeta } from "../../table/ITableMeta";
+import { SortOrder } from "../../types/SortOrder";
 import { gt } from "../../where/gt";
 import { IPerson } from "../model/IPerson";
 
@@ -20,6 +21,13 @@ describe("Table", () => {
     Person.insert({ firstname, lastname });
     Person.insert({ firstname, lastname });
     Person.insert({ firstname, lastname });
+  };
+
+  const insertForSortBy = () => {
+    Person.insert({ firstname: "Rene", lastname: "Hoffmann" });
+    Person.insert({ firstname: "Johann", lastname: "Vogel" });
+    Person.insert({ firstname: "Peter", lastname: "Hoffmann" });
+    Person.insert({ firstname: "Ilona", lastname: "Amsel" });
   };
 
   beforeEach(() => {
@@ -205,6 +213,81 @@ describe("Table", () => {
       insertPersons();
       const persons = Person.select({ limit: 2, where: { id: 2 } });
       expect(persons.length).equals(1);
+    });
+
+    it("returns values ordered by ASC", () => {
+      insertForSortBy();
+      const persons = Person.select({ orderBy: { firstname: SortOrder.ASC } });
+      expect(persons.length).equals(4);
+      expect(persons[0].firstname).equals("Ilona");
+      expect(persons[1].firstname).equals("Johann");
+      expect(persons[2].firstname).equals("Peter");
+      expect(persons[3].firstname).equals("Rene");
+    });
+
+    it("returns values ordered by DESC", () => {
+      insertForSortBy();
+      const persons = Person.select({ orderBy: { firstname: SortOrder.DESC } });
+      expect(persons.length).equals(4);
+      expect(persons[0].firstname).equals("Rene");
+      expect(persons[1].firstname).equals("Peter");
+      expect(persons[2].firstname).equals("Johann");
+      expect(persons[3].firstname).equals("Ilona");
+    });
+
+    it("returns values ordered by DESC and ASC", () => {
+      insertForSortBy();
+      const persons = Person.select({
+        orderBy: { lastname: SortOrder.DESC, firstname: SortOrder.ASC },
+      });
+      expect(persons.length).equals(4);
+      expect(persons[0].firstname).equals("Johann");
+      expect(persons[1].firstname).equals("Peter");
+      expect(persons[2].firstname).equals("Rene");
+      expect(persons[3].firstname).equals("Ilona");
+    });
+
+    it("returns values ordered by DESC and DESC", () => {
+      insertForSortBy();
+      const persons = Person.select({
+        orderBy: { lastname: SortOrder.DESC, firstname: SortOrder.DESC },
+      });
+      expect(persons.length).equals(4);
+      expect(persons[0].firstname).equals("Johann");
+      expect(persons[1].firstname).equals("Rene");
+      expect(persons[2].firstname).equals("Peter");
+      expect(persons[3].firstname).equals("Ilona");
+    });
+
+    it("returns values ordered by DESC and ASC, restricted by where", () => {
+      insertForSortBy();
+      const persons = Person.select({
+        where: { lastname: "Hoffmann" },
+        orderBy: { lastname: SortOrder.DESC, firstname: SortOrder.ASC },
+      });
+      expect(persons.length).equals(2);
+      expect(persons[0].firstname).equals("Peter");
+      expect(persons[1].firstname).equals("Rene");
+    });
+
+    it("returns values ordered by DESC and DESC, restricted by where", () => {
+      insertForSortBy();
+      const persons = Person.select({
+        where: { lastname: "Hoffmann" },
+        orderBy: { lastname: SortOrder.DESC, firstname: SortOrder.DESC },
+      });
+      expect(persons.length).equals(2);
+      expect(persons[0].firstname).equals("Rene");
+      expect(persons[1].firstname).equals("Peter");
+    });
+
+    it("returns no values ordered by DESC and DESC if not found by where", () => {
+      insertForSortBy();
+      const persons = Person.select({
+        where: { lastname: "abc" },
+        orderBy: { lastname: SortOrder.DESC, firstname: SortOrder.DESC },
+      });
+      expect(persons.length).equals(0);
     });
   });
 
