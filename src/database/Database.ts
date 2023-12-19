@@ -10,7 +10,7 @@ import { IDatabase } from "./IDatabase";
 
 export class Database implements IDatabase {
   private readonly databaseFileName: string;
-  private readonly metaTable: MetaTable;
+  readonly metaTable: MetaTable;
 
   constructor(readonly databaseName: string) {
     this.databaseFileName = `db.${databaseName}`;

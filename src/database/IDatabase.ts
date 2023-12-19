@@ -1,5 +1,6 @@
 import { IRecord } from "../record/IRecord";
 import { ITableBuilder } from "../table/ITableBuilder";
+import { MetaTable } from "../table/MetaTable";
 import { IdType } from "../types/IdType";
 import { ITable } from "./../table/ITable";
 
@@ -36,4 +37,10 @@ export interface IDatabase {
    */
   drop(tableName: string): boolean;
   readonly databaseName: string;
+
+  /**
+   * Returns the meta table of the current database.
+   * The meta table contains information of all tables of the database.
+   */
+  readonly metaTable: MetaTable;
 }

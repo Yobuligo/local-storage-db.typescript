@@ -4,6 +4,7 @@ import { IDatabase } from "../../database/IDatabase";
 import { MemoryStorage } from "../../storage/MemoryStorage";
 import { StorageFactory } from "../../storage/StorageFactory";
 import { ITable } from "../../table/ITable";
+import { ITableMeta } from "../../table/ITableMeta";
 import { gt } from "../../where/gt";
 import { IPerson } from "../model/IPerson";
 
@@ -67,6 +68,22 @@ describe("Table", () => {
       insertPersons();
       Person.delete({ id: 10 });
       expect(Person.count()).equals(3);
+    });
+  });
+
+  describe("drop", () => {
+    it("deletes table data from storage", () => {
+      insertPersons();
+      Person.drop();
+      Person.count();
+      expect(Person.count()).equals(0);
+    });
+
+    it("deletes table definition from metaTable", () => {
+      insertPersons();
+      Person.drop();
+      const tableMetas: ITableMeta[] = db.metaTable.select();
+      expect(tableMetas.length).equals(0);
     });
   });
 
