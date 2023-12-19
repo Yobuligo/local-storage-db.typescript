@@ -7,11 +7,14 @@ import { IdType } from "../types/IdType";
 import { ITable } from "./ITable";
 import { ITableBuilder } from "./ITableBuilder";
 import { ITableConfig } from "./ITableConfig";
+import { OnTableBuildHandler } from "./OnTableBuildHandler";
 import { Table } from "./Table";
 
 export class TableBuilder<TRecord extends IRecord<IdType>>
   implements ITableBuilder<TRecord>
 {
+  private onTableBuildHandlers: OnTableBuildHandler[] = [];
+
   constructor(
     private readonly tableName: string,
     private readonly database: IDatabase,
@@ -25,12 +28,25 @@ export class TableBuilder<TRecord extends IRecord<IdType>>
       idGenerator = UUIDGenerator;
     }
 
-    return new Table(
+    const table = new Table(
       this.tableName,
       this.database,
       this.tableStorage,
       idGenerator,
       config
+    );
+
+    this.notifyOnTableBuild(table);
+    return table;
+  }
+
+  onBuild(handler: OnTableBuildHandler): void {
+    this.onTableBuildHandlers.push(handler);
+  }
+
+  private notifyOnTableBuild(table: ITable<any>) {
+    this.onTableBuildHandlers.forEach((onTableBuildHandler) =>
+      onTableBuildHandler(table)
     );
   }
 }

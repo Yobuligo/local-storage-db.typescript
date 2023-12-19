@@ -12,6 +12,7 @@ import { IDatabase } from "./IDatabase";
 
 export class Database implements IDatabase {
   private readonly databaseFileName: string;
+  private readonly tables: ITable<any>[] = [];
   readonly metaTable: MetaTable;
 
   constructor(readonly databaseName: string) {
@@ -30,7 +31,15 @@ export class Database implements IDatabase {
     const tableFileName = this.createTableFileName(tableName);
     const tableStorage = StorageFactory.create<TRecord>(tableFileName);
     const idGenerator = new AutoIncrement(this.metaTable, tableFileName);
-    return new TableBuilder(tableName, this, tableStorage, idGenerator);
+    const tableBuilder = new TableBuilder(
+      tableName,
+      this,
+      tableStorage,
+      idGenerator
+    );
+
+    tableBuilder.onBuild((table) => this.tables.push(table));
+    return tableBuilder;
   }
 
   drop(): boolean {
