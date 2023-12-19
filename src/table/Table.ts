@@ -16,6 +16,8 @@ import { IUpdateResult } from "./IUpdateResult";
  * A table is required to write data into, read or delete data from it.
  */
 export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
+  private _isDropped = false;
+
   constructor(
     readonly name: string,
     private readonly database: IDatabase,
@@ -43,8 +45,10 @@ export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
     }
   }
 
-  drop(): void {
+  drop(): boolean {
     this.database.dropTable(this);
+    this._isDropped = true;
+    return true;
   }
 
   insert(record: IRecordDetails<TRecord>): TRecord;
@@ -55,6 +59,10 @@ export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
     } else {
       return this.insertRecord(records as IRecordDetails<TRecord>);
     }
+  }
+
+  get isDropped(): boolean {
+    return this._isDropped;
   }
 
   modify(

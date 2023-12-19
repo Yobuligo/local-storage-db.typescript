@@ -1,13 +1,14 @@
 import { IRecord } from "../record/IRecord";
 import { ITableBuilder } from "../table/ITableBuilder";
 import { MetaTable } from "../table/MetaTable";
+import { IDroppable } from "../types/IDroppable";
 import { IdType } from "../types/IdType";
 import { ITable } from "./../table/ITable";
 
 /**
  * An implementation of this interface represents a database.
  */
-export interface IDatabase {
+export interface IDatabase extends IDroppable {
   /**
    * Defines a new table with the given name {@link tableName}.
    * Returns a builder to configure the table details.
@@ -41,6 +42,11 @@ export interface IDatabase {
    * Drops the given {@link table}.
    */
   dropTable(table: ITable<any>): boolean;
+
+  /**
+   * Returns if the database is dropped.
+   */
+  readonly isDropped: boolean;
 
   /**
    * Returns the name of the database.

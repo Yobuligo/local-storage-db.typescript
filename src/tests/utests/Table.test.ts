@@ -154,6 +154,17 @@ describe("Table", () => {
     });
   });
 
+  describe("isDropped", () => {
+    it("returns false if table is not dropped", () => {
+      expect(Person.isDropped).equals(false);
+    });
+
+    it("returns true if table is dropped", () => {
+      Person.drop();
+      expect(Person.isDropped).equals(true);
+    });
+  });
+
   describe("select", () => {
     it("returns empty list if table is empty", () => {
       const persons = Person.select();

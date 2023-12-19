@@ -13,6 +13,7 @@ import { IDatabase } from "./IDatabase";
 
 export class Database implements IDatabase {
   private readonly databaseFileName: string;
+  private _isDropped = false;
 
   /**
    * Contains the defined tables for this database.
@@ -55,6 +56,7 @@ export class Database implements IDatabase {
   drop(): boolean {
     this.dropTables();
     this.metaTable.delete();
+    this._isDropped = true;
     return true;
   }
 
@@ -69,6 +71,10 @@ export class Database implements IDatabase {
     this.deleteTableDefinition(table);
     this.tables.delete(table.name);
     return true;
+  }
+
+  get isDropped(): boolean {
+    return this._isDropped;
   }
 
   /**

@@ -1,6 +1,7 @@
 import { IRecord } from "../record/IRecord";
 import { IRecordDetails } from "../record/IRecordDetails";
 import { ISelectOptions } from "../select/ISelectOptions";
+import { IDroppable } from "../types/IDroppable";
 import { IdType } from "../types/IdType";
 import { IWhere } from "../where/IWhere";
 import { ITableConfig } from "./ITableConfig";
@@ -9,7 +10,7 @@ import { IUpdateResult } from "./IUpdateResult";
 /**
  * An implementation of this interface represents a table which can have data of type {@link TRecord}.
  */
-export interface ITable<TRecord extends IRecord<IdType>> {
+export interface ITable<TRecord extends IRecord<IdType>> extends IDroppable {
   /**
    * Returns the name of this table.
    */
@@ -45,7 +46,7 @@ export interface ITable<TRecord extends IRecord<IdType>> {
    * Drops the current table with all its data.
    * The table will be removed from the underlying database.
    */
-  drop(): void;
+  drop(): boolean;
 
   /**
    * Inserts a new {@link record} to this table and returns the created object.
@@ -69,6 +70,11 @@ export interface ITable<TRecord extends IRecord<IdType>> {
    * ]);
    */
   insert(records: IRecordDetails<TRecord>[]): TRecord[];
+
+  /**
+   * Returns if the table is dropped.
+   */
+  readonly isDropped: boolean;
 
   /**
    * Updates all records, or those which match the {@link where} clause, with the new values of {@link record} or inserts an new record, if it doesn't exist yet.

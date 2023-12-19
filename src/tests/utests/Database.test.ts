@@ -45,4 +45,15 @@ describe("Database", () => {
       expect(db.metaTable.count()).equals(0);
     });
   });
+
+  describe("isDropped", () => {
+    it("returns false if database is not dropped", () => {
+      expect(db.isDropped).equals(false);
+    });
+
+    it("returns true if database is dropped", () => {
+      db.drop();
+      expect(db.isDropped).equals(true);
+    });
+  });
 });
