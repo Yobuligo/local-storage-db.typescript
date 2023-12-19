@@ -1,3 +1,4 @@
+import { IDatabase } from "../database/IDatabase";
 import { IIdGenerator } from "../idGenerator/IIdGenerator";
 import { IRecord } from "../record/IRecord";
 import { IRecordDetails } from "../record/IRecordDetails";
@@ -5,7 +6,6 @@ import { RecordUtils } from "../record/RecordUtils";
 import { ISelectOptions } from "../select/ISelectOptions";
 import { IStorage } from "../storage/IStorage";
 import { IdType } from "../types/IdType";
-import { Todo } from "../utils/Todo";
 import { IWhere } from "../where/IWhere";
 import { ITable } from "./ITable";
 import { ITableConfig } from "./ITableConfig";
@@ -18,6 +18,7 @@ import { IUpdateResult } from "./IUpdateResult";
 export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
   constructor(
     readonly name: string,
+    private readonly database: IDatabase,
     private readonly storage: IStorage<TRecord>,
     private readonly idGenerator: IIdGenerator<IdType>,
     private readonly tableConfig?: ITableConfig
@@ -43,7 +44,7 @@ export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
   }
 
   drop(): void {
-      Todo()
+    this.database.drop(this.name);
   }
 
   insert(record: IRecordDetails<TRecord>): TRecord;

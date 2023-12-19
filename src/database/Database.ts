@@ -19,7 +19,7 @@ export class Database implements IDatabase {
     );
 
     // This meta table handles or tables which are added to that database
-    this.metaTable = new MetaTable(databaseName, databaseStorage);
+    this.metaTable = new MetaTable(databaseName, this, databaseStorage);
   }
 
   define<TRecord extends IRecord<IdType>>(
@@ -28,7 +28,7 @@ export class Database implements IDatabase {
     const tableFileName = this.createTableFileName(tableName);
     const tableStorage = StorageFactory.create<TRecord>(tableFileName);
     const idGenerator = new AutoIncrement(this.metaTable, tableFileName);
-    return new TableBuilder(tableName, tableStorage, idGenerator);
+    return new TableBuilder(tableName, this, tableStorage, idGenerator);
   }
 
   drop(tableName: string): boolean {

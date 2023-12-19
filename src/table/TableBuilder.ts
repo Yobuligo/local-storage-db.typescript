@@ -1,3 +1,4 @@
+import { IDatabase } from "../database/IDatabase";
 import { IIdGenerator } from "../idGenerator/IIdGenerator";
 import { UUIDGenerator } from "../idGenerator/UUIDGenerator";
 import { IRecord } from "../record/IRecord";
@@ -13,6 +14,7 @@ export class TableBuilder<TRecord extends IRecord<IdType>>
 {
   constructor(
     private readonly tableName: string,
+    private readonly database: IDatabase,
     private readonly tableStorage: IStorage<TRecord>,
     private readonly idGenerator: IIdGenerator<IdType>
   ) {}
@@ -23,6 +25,12 @@ export class TableBuilder<TRecord extends IRecord<IdType>>
       idGenerator = UUIDGenerator;
     }
 
-    return new Table(this.tableName, this.tableStorage, idGenerator, config);
+    return new Table(
+      this.tableName,
+      this.database,
+      this.tableStorage,
+      idGenerator,
+      config
+    );
   }
 }
