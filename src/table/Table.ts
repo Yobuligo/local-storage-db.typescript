@@ -4,6 +4,7 @@ import { IRecord } from "../record/IRecord";
 import { IRecordDetails } from "../record/IRecordDetails";
 import { RecordUtils } from "../record/RecordUtils";
 import { ISelectOptions } from "../select/ISelectOptions";
+import { IHaveStorage } from "../storage/IHaveStorage";
 import { IStorage } from "../storage/IStorage";
 import { IdType } from "../types/IdType";
 import { IWhere } from "../where/IWhere";
@@ -15,11 +16,13 @@ import { IUpdateResult } from "./IUpdateResult";
  * This class represents each type of table.
  * A table is required to write data into, read or delete data from it.
  */
-export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
+export class Table<TRecord extends IRecord<IdType>>
+  implements ITable<TRecord>, IHaveStorage<TRecord>
+{
   constructor(
     readonly name: string,
     private readonly database: IDatabase,
-    private readonly storage: IStorage<TRecord>,
+    readonly storage: IStorage<TRecord>,
     private readonly idGenerator: IIdGenerator<IdType>,
     private readonly tableConfig?: ITableConfig
   ) {}

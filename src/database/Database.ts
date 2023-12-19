@@ -1,6 +1,7 @@
 import { AutoIncrement } from "../idGenerator/AutoIncrement";
 import { IRecord } from "../record/IRecord";
 import { StorageFactory } from "../storage/StorageFactory";
+import { ITable } from "../table/ITable";
 import { ITableBuilder } from "../table/ITableBuilder";
 import { ITableMeta } from "../table/ITableMeta";
 import { MetaTable } from "../table/MetaTable";
@@ -31,7 +32,8 @@ export class Database implements IDatabase {
     return new TableBuilder(tableName, this, tableStorage, idGenerator);
   }
 
-  drop(tableName: string): boolean {
+  drop(table: ITable<any>): boolean {
+    if ()
     this.dropTable(tableName);
     this.deleteTableDefinition(tableName);
     return true;

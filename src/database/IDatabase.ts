@@ -33,9 +33,13 @@ export interface IDatabase {
   ): ITableBuilder<TRecord>;
 
   /**
-   * Drops the table with the given {@link tableName}
+   * Drops the given {@link table}.
    */
-  drop(tableName: string): boolean;
+  drop(table: ITable<any>): boolean;
+
+  /**
+   * Returns the name of the database.
+   */
   readonly databaseName: string;
 
   /**
