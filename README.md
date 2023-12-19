@@ -93,6 +93,15 @@ Return all records which match the where clause:
 const persons = Person.select({ where: { id: 10 } });
 ```
 
+Return all records which match the where clause ordered by firstname:
+
+```
+const persons = Person.select({
+  where: { lastname: "Starfish" },
+  orderBy: { firstname: SortOrder.ASC },
+});
+```
+
 Return a max limit of records which match the where clause
 
 ```
@@ -147,5 +156,6 @@ Person.delete({ id: gt(10), lastname: "Starfish" });
 ```
 
 TODOs
+
 - adding relations (define them in build())
 - Boards.notes.add(board, note)

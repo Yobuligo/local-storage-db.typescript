@@ -40,3 +40,8 @@ const persons = Person.select({
 persons.forEach((person) =>
   console.log(`${person.firstname} ${person.lastname}`)
 );
+
+Person.select({
+  where: { lastname: "Starfish" },
+  orderBy: { firstname: SortOrder.ASC },
+});
