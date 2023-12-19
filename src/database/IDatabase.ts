@@ -45,7 +45,7 @@ export interface IDatabase {
   /**
    * Returns the name of the database.
    */
-  readonly databaseName: string;
+  readonly name: string;
 
   /**
    * Returns the meta table of the current database.

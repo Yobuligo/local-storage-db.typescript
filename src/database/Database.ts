@@ -23,14 +23,14 @@ export class Database implements IDatabase {
   > = new Map();
   readonly metaTable: MetaTable;
 
-  constructor(readonly databaseName: string) {
-    this.databaseFileName = `db.${databaseName}`;
+  constructor(readonly name: string) {
+    this.databaseFileName = `db.${name}`;
     const databaseStorage = StorageFactory.create<ITableMeta>(
       this.databaseFileName
     );
 
     // This meta table handles or tables which are added to that database
-    this.metaTable = new MetaTable(databaseName, this, databaseStorage);
+    this.metaTable = new MetaTable(name, this, databaseStorage);
   }
 
   define<TRecord extends IRecord<IdType>>(
