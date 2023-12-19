@@ -1,18 +1,26 @@
 import { AutoIncrement } from "../idGenerator/AutoIncrement";
 import { IRecord } from "../record/IRecord";
+import { IStorage } from "../storage/IStorage";
 import { StorageFactory } from "../storage/StorageFactory";
-import { isHaveStorage } from "../storage/isHaveStorage";
 import { ITable } from "../table/ITable";
 import { ITableBuilder } from "../table/ITableBuilder";
 import { ITableMeta } from "../table/ITableMeta";
 import { IdType } from "../types/IdType";
+import { error } from "../utils/error/error";
 import { MetaTable } from "./../table/MetaTable";
 import { TableBuilder } from "./../table/TableBuilder";
 import { IDatabase } from "./IDatabase";
 
 export class Database implements IDatabase {
   private readonly databaseFileName: string;
-  private readonly tables: ITable<any>[] = [];
+
+  /**
+   * Contains the defined tables for this database.
+   */
+  private readonly tables: Map<
+    string,
+    { table: ITable<any>; tableStorage: IStorage<any> }
+  > = new Map();
   readonly metaTable: MetaTable;
 
   constructor(readonly databaseName: string) {
@@ -28,7 +36,7 @@ export class Database implements IDatabase {
   define<TRecord extends IRecord<IdType>>(
     tableName: string
   ): ITableBuilder<TRecord> {
-    const tableFileName = this.createTableFileName(tableName);
+    const tableFileName = this.toTableFileName(tableName);
     const tableStorage = StorageFactory.create<TRecord>(tableFileName);
     const idGenerator = new AutoIncrement(this.metaTable, tableFileName);
     const tableBuilder = new TableBuilder(
@@ -38,7 +46,9 @@ export class Database implements IDatabase {
       idGenerator
     );
 
-    tableBuilder.onBuild((table) => this.tables.push(table));
+    tableBuilder.onBuild((table) =>
+      this.tables.set(table.name, { table, tableStorage })
+    );
     return tableBuilder;
   }
 
@@ -49,32 +59,51 @@ export class Database implements IDatabase {
   }
 
   dropTable<TRecord extends IRecord<IdType>>(table: ITable<TRecord>): boolean {
-    if (isHaveStorage(table)) {
-      table.storage.delete();
-      this.deleteTableDefinition(table);
-      return true;
-    } else {
+    const item = this.tables.get(table.name);
+    if (!item) {
       throw new Error(
         `Error while dropping table. Table is not valid. Unable to delete table data from storage.`
       );
     }
+    item.tableStorage.delete();
+    this.deleteTableDefinition(table);
+    this.tables.delete(table.name);
+    return true;
   }
 
   /**
-   * Creates a file name for the given {@link tableName}.
+   * Converts a {@link tableName} to a table file name.
+   *
+   * @example
+   * persons -> db.demo.persons
    */
-  private createTableFileName(tableName: string): string {
+  private toTableFileName(tableName: string): string {
     return `${this.databaseFileName}.${tableName}`;
   }
 
   /**
-   * Deletes the table definition for the given {@link tableName}.
+   * Converts a {@link tableFileName} to a table name.
+   *
+   * @example
+   * db.demo.persons -> persons
+   */
+  private toTableName(tableFileName: string): string {
+    return (
+      tableFileName.split(/[. ]+/).pop() ??
+      error(
+        `Error while getting table file name from table name. Invalid table file name.`
+      )
+    );
+  }
+
+  /**
+   * Deletes the table definition for the given {@link tableFileName}.
    */
   private deleteTableDefinition<TRecord extends IRecord<IdType>>(
     table: ITable<TRecord>
   ) {
-    const tableName = this.createTableFileName(table.name);
-    this.metaTable.delete({ tableName });
+    const tableFileName = this.toTableFileName(table.name);
+    this.metaTable.delete({ tableFileName });
   }
 
   /**
@@ -83,8 +112,15 @@ export class Database implements IDatabase {
   private dropTables() {
     const tableMetas = this.metaTable.select();
     tableMetas.forEach((tableMeta) => {
-      const table = this.define(tableMeta.tableName).build();
-      table.drop();
+      // check if table is already loaded, otherwise load it
+      const tableName = this.toTableName(tableMeta.tableFileName);
+      const item = this.tables.get(tableName);
+      if (item) {
+        item.table.drop();
+      } else {
+        const table = this.define(tableName).build();
+        table.drop();
+      }
     });
   }
 }

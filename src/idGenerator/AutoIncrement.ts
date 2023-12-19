@@ -6,7 +6,7 @@ export class AutoIncrement implements IAutoIncrement {
 
   constructor(
     private readonly metaTable: MetaTable,
-    private readonly tableName: string
+    private readonly tableFileName: string
   ) {
     this.value = this.readAutoIncrement();
   }
@@ -25,7 +25,7 @@ export class AutoIncrement implements IAutoIncrement {
     const tableMeta = this.metaTable.select({
       limit: 1,
       where: {
-        tableName: this.tableName,
+        tableFileName: this.tableFileName,
       },
     })[0];
     return tableMeta?.autoIncrement ?? 0;
@@ -35,9 +35,9 @@ export class AutoIncrement implements IAutoIncrement {
     this.metaTable.modify(
       {
         autoIncrement: this.value,
-        tableName: this.tableName,
+        tableFileName: this.tableFileName,
       },
-      { tableName: this.tableName }
+      { tableFileName: this.tableFileName }
     );
   }
 }

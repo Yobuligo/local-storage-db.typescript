@@ -10,7 +10,10 @@ export interface ITableMeta extends IRecord<number> {
   autoIncrement: number;
 
   /**
-   * Returns the table name.
+   * Returns the table file name.
+   *
+   * @example
+   * db.demo.persons
    */
-  tableName: string;
+  tableFileName: string;
 }
