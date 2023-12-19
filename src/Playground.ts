@@ -12,6 +12,7 @@ interface ITask extends IRecord<number> {
 }
 
 StorageFactory.storageType = MemoryStorage;
+
 const db = new Database("demo");
 const Person = db.define<IPerson>("persons").build();
 
@@ -19,6 +20,7 @@ const person = Person.insert({ firstname: "Test" });
 
 const Task = db.define<ITask>("tasks").build();
 const task = Task.insert({ title: "Hello" });
+
 db.drop();
 
 const persoNCount = Person.count();

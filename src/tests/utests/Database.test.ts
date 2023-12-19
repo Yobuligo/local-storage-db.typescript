@@ -26,13 +26,23 @@ describe("Database", () => {
   });
 
   describe("drop", () => {
-    Task.insert({
-      description: "Hello World Description",
-      title: "Hello World Title",
+    it("deletes table data", () => {
+      Task.insert({
+        description: "Hello World Description",
+        title: "Hello World Title",
+      });
+      db.drop();
+      expect(Person.count()).equals(0);
+      expect(Task.count()).equals(0);
     });
-    // db.drop();
-    // expect(Person.count()).equals(0);
-    // expect(Task.count()).equals(0);
-    // expect(db.metaTable.count()).equals(0);
+
+    it("deletes meta table data", () => {
+      Task.insert({
+        description: "Hello World Description",
+        title: "Hello World Title",
+      });
+      db.drop();
+      expect(db.metaTable.count()).equals(0);
+    });
   });
 });
