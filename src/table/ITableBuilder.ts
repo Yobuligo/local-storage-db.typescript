@@ -11,7 +11,7 @@ export interface ITableBuilder<TRecord extends IRecord<IdType>> {
   /**
    * Creates a {@link ITable} with the given {@link config}.
    */
-  build(config?: ITableConfig): ITable<TRecord>;
+  build<R>(config?: ITableConfig<R>): ITable<TRecord> & R;
 
   /**
    * Called when a table was build.

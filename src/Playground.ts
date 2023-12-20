@@ -4,6 +4,7 @@ import { IRecord } from "./record/IRecord";
 import { MemoryStorage } from "./storage/MemoryStorage";
 import { StorageFactory } from "./storage/StorageFactory";
 import { SortOrder } from "./types/SortOrder";
+import { Todo } from "./utils/Todo";
 
 interface IPerson extends IRecord<number> {
   firstname: string;
@@ -44,4 +45,14 @@ persons.forEach((person) =>
 Person.select({
   where: { lastname: "Starfish" },
   orderBy: { firstname: SortOrder.ASC },
+});
+
+const oneToMany = (): typeof Person => {
+  return Todo();
+};
+
+const Test = db.define<IPerson>("test2").build({
+  relations: {
+    // notes: oneToMany(),
+  },
 });
