@@ -1,8 +1,15 @@
+import { IRelationConfig } from "../Playground";
+import { IRecord } from "../record/IRecord";
+import { IdType } from "../types/IdType";
+
 /**
  * An implementation of this interface provides information on how to configure a table, when it is defined.
  */
-export interface ITableConfig<R> {
-  relations?: R
+export interface ITableConfig<
+  TSource extends IRecord<IdType>,
+  TTarget extends IRelationConfig<TSource>
+> {
+  relations?: TTarget;
 
   /**
    * Defines if timestamps for createdAt and changedAt are handled by the api.

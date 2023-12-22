@@ -3,8 +3,9 @@ import { IDatabase } from "./database/IDatabase";
 import { IRecord } from "./record/IRecord";
 import { MemoryStorage } from "./storage/MemoryStorage";
 import { StorageFactory } from "./storage/StorageFactory";
+import { ITable } from "./table/ITable";
+import { IdType } from "./types/IdType";
 import { SortOrder } from "./types/SortOrder";
-import { Todo } from "./utils/Todo";
 
 interface IPerson extends IRecord<number> {
   firstname: string;
@@ -19,6 +20,7 @@ StorageFactory.storageType = MemoryStorage;
 
 const db: IDatabase = new Database("demo");
 const Person = db.define<IPerson>("persons").build();
+const Task = db.define<ITask>("tasks").build();
 
 Person.insert({ firstname: "Rene", lastname: "Hoffmann" });
 Person.insert({ firstname: "Johann", lastname: "Vogel" });
@@ -47,12 +49,46 @@ Person.select({
   orderBy: { firstname: SortOrder.ASC },
 });
 
-const oneToMany = (): typeof Person => {
-  return Todo();
+interface IRelation<
+  TSource extends IRecord<IdType>,
+  TTarget extends IRecord<IdType>
+> {
+  source: TSource;
+  target: TTarget;
+}
+
+export type IRelationConfig<TSource extends IRecord<IdType>> = {
+  [key: string]: IRelation<TSource, any>;
+};
+
+const oneToOne = <
+  TSource extends IRecord<IdType>,
+  TTarget extends IRecord<IdType>
+>(
+  target: ITable<TTarget>
+): IRelation<TSource, TTarget> => {
+  throw new Error();
 };
 
 const Test = db.define<IPerson>("test2").build({
   relations: {
-    // notes: oneToMany(),
+    tasks: oneToOne(Task),
+    something: oneToOne(Person),
+  },
+});
+
+interface INewType<T extends IRelationConfig<IPerson>> {
+  relations: T;
+}
+
+const define = <T extends IRelationConfig<IPerson>>(
+  newType: INewType<T>
+): T => {
+  throw new Error();
+};
+
+const result = define({
+  relations: {
+    tasks: oneToOne(Task),
   },
 });

@@ -1,3 +1,4 @@
+import { IRelationConfig } from "../Playground";
 import { IRecord } from "../record/IRecord";
 import { IdType } from "../types/IdType";
 import { ITable } from "./ITable";
@@ -11,7 +12,12 @@ export interface ITableBuilder<TRecord extends IRecord<IdType>> {
   /**
    * Creates a {@link ITable} with the given {@link config}.
    */
-  build<R>(config?: ITableConfig<R>): ITable<TRecord> & R;
+  build<
+    TSource extends IRecord<IdType>,
+    TTarget extends IRelationConfig<TSource>
+  >(
+    config?: ITableConfig<TSource, TTarget>
+  ): ITable<TRecord> & TTarget;
 
   /**
    * Called when a table was build.
