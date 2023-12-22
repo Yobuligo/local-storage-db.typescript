@@ -1,6 +1,7 @@
 import { Database } from "./database/Database";
 import { IDatabase } from "./database/IDatabase";
 import { IRecord } from "./record/IRecord";
+import { oneToMany } from "./relations/oneToMany";
 import { oneToOne } from "./relations/oneToOne";
 import { MemoryStorage } from "./storage/MemoryStorage";
 import { StorageFactory } from "./storage/StorageFactory";
@@ -26,10 +27,18 @@ const Task = db.define<ITask>("tasks").build();
 const Car = db.define<ICar>("cars").build();
 const Person = db.define<IPerson>("persons").build({
   relations: {
-    tasks: oneToOne(Task),
+    tasks: oneToMany(Task),
     cars: oneToOne(Car),
   },
 });
+
+const task = Task.insert({ title: "Test" });
+const person = Person.insert({ firstname: "Stacey", lastname: "Starfish" });
+const car = Car.insert({ brand: "BMW" });
+
+Person.tasks.insert(person, task);
+Person.tasks.delete(person, task);
+Person.cars.insert(person, car);
 
 Person.insert({ firstname: "Rene", lastname: "Hoffmann" });
 Person.insert({ firstname: "Johann", lastname: "Vogel" });

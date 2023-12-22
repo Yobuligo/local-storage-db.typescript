@@ -10,7 +10,9 @@ export interface IOneToMany<
   TSource extends IRecord<IdType>,
   TTarget extends IRecord<IdType>
 > extends IRelation<TSource, TTarget> {
-  add(source: TSource, target: TTarget): void;
-  remove(source: TSource, target: TTarget): void;
-  find(): TTarget[]
+  delete(source: TSource, target: TTarget): void;
+  delete(source: TSource, target: TTarget[]): void;
+  insert(source: TSource, target: TTarget): void;
+  insert(source: TSource, target: TTarget[]): void;
+  select(source: TSource): TTarget[];
 }
