@@ -10,6 +10,7 @@ export interface IOneToOne<
   TSource extends IRecord<IdType>,
   TTarget extends IRecord<IdType>
 > extends IRelation<TSource, TTarget> {
-  set(target: TTarget): void;
-  get(): TTarget;
+  get(source: TSource): TTarget;
+  remove(source: TSource): void;
+  set(source: TSource, target: TTarget): void;
 }

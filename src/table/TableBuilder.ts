@@ -2,6 +2,8 @@ import { IDatabase } from "../database/IDatabase";
 import { IIdGenerator } from "../idGenerator/IIdGenerator";
 import { UUIDGenerator } from "../idGenerator/UUIDGenerator";
 import { IRecord } from "../record/IRecord";
+import { IRelationConfig } from "../relations/IRelationConfig";
+import { ITableRelation } from "../relations/ITableRelation";
 import { IStorage } from "../storage/IStorage";
 import { IdType } from "../types/IdType";
 import { ITable } from "./ITable";
@@ -22,7 +24,9 @@ export class TableBuilder<TRecord extends IRecord<IdType>>
     private readonly idGenerator: IIdGenerator<IdType>
   ) {}
 
-  build(config?: ITableConfig | undefined): ITable<TRecord> {
+  build<TRelationConfig extends IRelationConfig<TRecord>>(
+    config?: ITableConfig<TRecord, TRelationConfig> | undefined
+  ): ITableRelation<TRecord, TRelationConfig> {
     let idGenerator = this.idGenerator;
     if (config && config.uuid) {
       idGenerator = UUIDGenerator;
@@ -37,7 +41,7 @@ export class TableBuilder<TRecord extends IRecord<IdType>>
     );
 
     this.notifyOnTableBuild(table);
-    return table;
+    return table as unknown as ITableRelation<TRecord, TRelationConfig>;
   }
 
   onBuild(handler: OnTableBuildHandler): void {
