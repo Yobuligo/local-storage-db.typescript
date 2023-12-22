@@ -73,22 +73,5 @@ const oneToOne = <
 const Test = db.define<IPerson>("test2").build({
   relations: {
     tasks: oneToOne(Task),
-    something: oneToOne(Person),
-  },
-});
-
-interface INewType<T extends IRelationConfig<IPerson>> {
-  relations: T;
-}
-
-const define = <T extends IRelationConfig<IPerson>>(
-  newType: INewType<T>
-): T => {
-  throw new Error();
-};
-
-const result = define({
-  relations: {
-    tasks: oneToOne(Task),
   },
 });

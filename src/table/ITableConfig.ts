@@ -5,11 +5,8 @@ import { IdType } from "../types/IdType";
 /**
  * An implementation of this interface provides information on how to configure a table, when it is defined.
  */
-export interface ITableConfig<
-  TSource extends IRecord<IdType>,
-  TTarget extends IRelationConfig<TSource>
-> {
-  relations?: TTarget;
+export interface ITableConfig<TSource extends IRecord<IdType>> {
+  relations?: IRelationConfig<TSource>;
 
   /**
    * Defines if timestamps for createdAt and changedAt are handled by the api.
