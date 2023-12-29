@@ -127,21 +127,25 @@ export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
   protected manyToMany<
     TTarget extends IRecord<IdType>,
     TTable extends ITable<TTarget>
-  >(type: TableConstructor<TTarget, TTable>): IManyToMany<TRecord, TTarget> {
+  >(
+    tableType: TableConstructor<TTarget, TTable>
+  ): IManyToMany<TRecord, TTarget> {
     throw new Error();
   }
 
   protected oneToMany<
     TTarget extends IRecord<IdType>,
     TTable extends ITable<TTarget>
-  >(type: TableConstructor<TTarget, TTable>): IOneToMany<TRecord, TTarget> {
+  >(
+    tableType: TableConstructor<TTarget, TTable>
+  ): IOneToMany<TRecord, TTarget> {
     throw new Error();
   }
 
   protected oneToOne<
     TTarget extends IRecord<IdType>,
     TTable extends ITable<TTarget>
-  >(type: TableConstructor<TTarget, TTable>): IOneToOne<TRecord, TTarget> {
+  >(tableType: TableConstructor<TTarget, TTable>): IOneToOne<TRecord, TTarget> {
     throw new Error();
   }
 
