@@ -27,10 +27,13 @@ const Task = db.define<ITask>("tasks").build();
 const Car = db.define<ICar>("cars").build();
 const Person = db.define<IPerson>("persons").build({
   relations: {
-    tasks: oneToMany(Task),
     cars: oneToOne(Car),
+    tasks: oneToMany(Task),
   },
 });
+
+Task.select
+
 
 const task = Task.insert({ title: "Test" });
 const person = Person.insert({ firstname: "Stacey", lastname: "Starfish" });
