@@ -17,6 +17,16 @@ interface ICar extends IRecord<number> {
   brand: string;
 }
 
+interface IDriverLicense extends IRecord<number> {
+  description: string;
+}
+
+interface IIdentityCard extends IRecord<number> {
+  date: Date;
+}
+
+interface ICertificate extends IRecord<number> {}
+
 StorageFactory.storageType = MemoryStorage;
 
 class DTask extends Table<ITask> {
@@ -24,12 +34,39 @@ class DTask extends Table<ITask> {
 }
 
 class DPerson extends Table<IPerson> {
+  /**
+   * Returns the tasks of the current person
+   */
   readonly tasks = this.oneToMany(DTask);
+
+  /**
+   * Returns the driver license of the given person
+   */
+  readonly driverLicense = this.oneToOne(DDriverLicense);
+
+  /**
+   * Returns the certificates of the current selected person
+   */
+  readonly certificates = this.oneToMany(DCertificate);
+
+  /**
+   * Returns the cars of the current person
+   */
+  readonly cars = this.manyToMany(DCard)
 }
+
+class DDriverLicense extends Table<IDriverLicense> {}
+
+class DIdentityCard extends Table<IIdentityCard> {}
+
+class DCertificate extends Table<ICertificate> {}
+
+class DCard extends Table<ICar>{}
 
 const db = new Database("demo");
 const Task = db.define<ITask>("tasks").build({ tableType: DTask });
 const Person = db.define<IPerson>("persons").build({ tableType: DPerson });
+Person.
 
 // type IConfig<TRecord extends IRecord<IdType>, TTable extends Table<TRecord>> = {
 //   type?: TableConstructor<TRecord, TTable>;
