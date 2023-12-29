@@ -1,5 +1,4 @@
 import { IRecord } from "../record/IRecord";
-import { IRelationConfig } from "../relations/IRelationConfig";
 import { IdType } from "../types/IdType";
 import { ITable } from "./ITable";
 import { ITableConfig } from "./ITableConfig";
@@ -15,9 +14,7 @@ export interface ITableBuilder<TRecord extends IRecord<IdType>> {
    * the generic type {@link TRelationConfig} is introduced, that contains the relation information.
    * The return value is not only a {@link ITable} but also contains the relations.
    */
-  build<TRelationConfig extends IRelationConfig<TRecord>>(
-    config?: ITableConfig<TRecord, TRelationConfig>
-  ): ITable<TRecord> & TRelationConfig;
+  build(config?: ITableConfig): ITable<TRecord>;
 
   /**
    * Called when a table was build.
