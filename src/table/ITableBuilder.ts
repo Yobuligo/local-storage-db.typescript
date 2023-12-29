@@ -14,7 +14,7 @@ export interface ITableBuilder<TRecord extends IRecord<IdType>> {
    * the generic type {@link TRelationConfig} is introduced, that contains the relation information.
    * The return value is not only a {@link ITable} but also contains the relations.
    */
-  build(config?: ITableConfig): ITable<TRecord>;
+  build(config?: ITableConfig<any, any>): ITable<TRecord>;
 
   /**
    * Called when a table was build.

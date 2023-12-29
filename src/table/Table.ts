@@ -27,7 +27,7 @@ export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
     private readonly database: IDatabase,
     private readonly storage: IStorage<TRecord>,
     private readonly idGenerator: IIdGenerator<IdType>,
-    private readonly tableConfig?: ITableConfig
+    private readonly tableConfig?: ITableConfig<TRecord, ITable<TRecord>>
   ) {}
 
   count(): number {

@@ -4,7 +4,6 @@ import { IRecord } from "../record/IRecord";
 import { IStorage } from "../storage/IStorage";
 import { IdType } from "../types/IdType";
 import { ITable } from "./ITable";
-import { ITableConfig } from "./ITableConfig";
 
 export type TableConstructor<
   TRecord extends IRecord<IdType>,
@@ -13,6 +12,5 @@ export type TableConstructor<
   name: string,
   database: IDatabase,
   storage: IStorage<TRecord>,
-  idGenerator: IIdGenerator<IdType>,
-  tableConfig?: ITableConfig
+  idGenerator: IIdGenerator<IdType>
 ) => TTable;

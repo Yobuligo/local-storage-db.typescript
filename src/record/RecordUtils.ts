@@ -34,7 +34,7 @@ class RecordUtilsDefault {
    */
   createTechnicalProps<TIdType extends IdType>(
     idGenerator: IIdGenerator<TIdType>,
-    tableConfig?: ITableConfig
+    tableConfig?: ITableConfig<any, any>
   ): IRecord<TIdType> {
     const id = idGenerator.next();
     if (this.needsTimestamps(tableConfig)) {
@@ -54,7 +54,7 @@ class RecordUtilsDefault {
   /**
    * Returns if createdAt and changedAt should be handled for the table of the given {@link tableConfig}.
    */
-  needsTimestamps(tableConfig?: ITableConfig): boolean {
+  needsTimestamps(tableConfig?: ITableConfig<any, any>): boolean {
     return (
       !tableConfig ||
       tableConfig.timestamps === undefined ||
@@ -125,7 +125,7 @@ class RecordUtilsDefault {
   updateItem<T>(
     updateRecord: T,
     record: T,
-    tableConfig?: ITableConfig
+    tableConfig?: ITableConfig<any, any>
   ): boolean {
     let updated = false;
     for (const prop in record) {

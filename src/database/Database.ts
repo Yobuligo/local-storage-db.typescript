@@ -4,7 +4,10 @@ import { IStorage } from "../storage/IStorage";
 import { StorageFactory } from "../storage/StorageFactory";
 import { ITable } from "../table/ITable";
 import { ITableBuilder } from "../table/ITableBuilder";
+import { ITableConfig } from "../table/ITableConfig";
 import { ITableMeta } from "../table/ITableMeta";
+import { Table } from "../table/Table";
+import { TableConstructor } from "../table/TableConstructor";
 import { IdType } from "../types/IdType";
 import { error } from "../utils/error/error";
 import { MetaTable } from "./../table/MetaTable";
@@ -52,6 +55,29 @@ export class Database implements IDatabase {
     );
     return tableBuilder;
   }
+
+  define2<TRecord extends IRecord<IdType>>(tableConfig: ITableConfig<TRecord>): ITable<TRecord>{
+
+  }
+
+  // define2<TRecord extends IRecord<IdType>, TTable extends ITable<TRecord>>(
+  //   type: TableConstructor<TRecord, TTable>
+  // ): TTable {
+  //   const tableName = type.name;
+  //   const tableFileName = this.toTableFileName(tableName);
+  //   const tableStorage = StorageFactory.create<TRecord>(tableFileName);
+  //   let idGenerator = new AutoIncrement(this.metaTable, tableFileName);
+  //   if (config && config.uuid) {
+  //     idGenerator = UUIDGenerator;
+  //   }
+
+  //   return new Table<TRecord>(
+  //     tableName,
+  //     this,
+  //     tableStorage,
+  //     idGenerator
+  //   ) as unknown as TTable;
+  // }
 
   drop(): boolean {
     this.dropTables();

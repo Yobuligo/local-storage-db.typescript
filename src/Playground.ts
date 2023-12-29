@@ -1,7 +1,6 @@
 import { IRecord } from "./record/IRecord";
 import { MemoryStorage } from "./storage/MemoryStorage";
 import { StorageFactory } from "./storage/StorageFactory";
-import { ITable } from "./table/ITable";
 import { Table } from "./table/Table";
 import { TableConstructor } from "./table/TableConstructor";
 import { IdType } from "./types/IdType";
@@ -29,18 +28,22 @@ class DPerson extends Table<IPerson> {
   readonly tasks = this.oneToMany(DTask);
 }
 
-const define = <
-  TRecord extends IRecord<IdType>,
-  TTable extends ITable<TRecord>
->(
-  name: string,
-  type: TableConstructor<TRecord, TTable>
-): TTable => {
+type IConfig<TRecord extends IRecord<IdType>, TTable extends Table<TRecord>> = {
+  type?: TableConstructor<TRecord, TTable>;
+  uuid?: boolean;
+};
+
+interface IBuilder<TRecord extends IRecord<any>> {
+  build<TTable extends Table<TRecord>>(
+    config?: IConfig<TRecord, TTable>
+  ): TTable;
+}
+
+const define = <T extends IRecord<any>>(name: string): IBuilder<T> => {
   throw new Error();
 };
 
-const Person = define("persons", DPerson);
-const Task = define("tasks", DTask);
+const MyTable = define<IPerson>("persons").build({ type: DPerson });
 
 // const Person = db.define(Person)
 

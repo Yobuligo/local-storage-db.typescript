@@ -100,7 +100,7 @@ export interface ITable<TRecord extends IRecord<IdType>> extends IDroppable {
    *
    * // return all records which match the where clause
    * Person.select({ where: { id: 10 } });
-   * 
+   *
    * // return all records which match the where clause ordered by firstname
    * Person.select({
    *   where: { lastname: "Starfish" },
@@ -127,4 +127,3 @@ export interface ITable<TRecord extends IRecord<IdType>> extends IDroppable {
     where?: IWhere<TRecord>
   ): IUpdateResult;
 }
-
