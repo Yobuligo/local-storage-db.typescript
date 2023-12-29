@@ -22,9 +22,9 @@ export class TableBuilder<TRecord extends IRecord<IdType>>
     private readonly idGenerator: IIdGenerator<IdType>
   ) {}
 
-  build(
-    tableConfig?: ITableConfig<TRecord, ITable<TRecord>> | undefined
-  ): ITable<TRecord> {
+  build<TTable extends ITable<TRecord>>(
+    tableConfig?: ITableConfig<TRecord, TTable> | undefined
+  ): TTable {
     let idGenerator = this.idGenerator;
     if (tableConfig && tableConfig.uuid) {
       idGenerator = UUIDGenerator;
@@ -39,7 +39,7 @@ export class TableBuilder<TRecord extends IRecord<IdType>>
     );
 
     this.notifyOnTableBuild(table);
-    return table;
+    return table as unknown as TTable;
   }
 
   onBuild(handler: OnTableBuildHandler): void {

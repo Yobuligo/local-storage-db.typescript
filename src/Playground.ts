@@ -1,9 +1,8 @@
+import { Database } from "./database/Database";
 import { IRecord } from "./record/IRecord";
 import { MemoryStorage } from "./storage/MemoryStorage";
 import { StorageFactory } from "./storage/StorageFactory";
 import { Table } from "./table/Table";
-import { TableConstructor } from "./table/TableConstructor";
-import { IdType } from "./types/IdType";
 
 interface IPerson extends IRecord<number> {
   firstname: string;
@@ -28,22 +27,25 @@ class DPerson extends Table<IPerson> {
   readonly tasks = this.oneToMany(DTask);
 }
 
-type IConfig<TRecord extends IRecord<IdType>, TTable extends Table<TRecord>> = {
-  type?: TableConstructor<TRecord, TTable>;
-  uuid?: boolean;
-};
+const db = new Database("demo");
+const Person = db.define<IPerson>("persons").build({ type: DPerson });
 
-interface IBuilder<TRecord extends IRecord<any>> {
-  build<TTable extends Table<TRecord>>(
-    config?: IConfig<TRecord, TTable>
-  ): TTable;
-}
+// type IConfig<TRecord extends IRecord<IdType>, TTable extends Table<TRecord>> = {
+//   type?: TableConstructor<TRecord, TTable>;
+//   uuid?: boolean;
+// };
 
-const define = <T extends IRecord<any>>(name: string): IBuilder<T> => {
-  throw new Error();
-};
+// interface IBuilder<TRecord extends IRecord<any>> {
+//   build<TTable extends Table<TRecord>>(
+//     config?: IConfig<TRecord, TTable>
+//   ): TTable;
+// }
 
-const MyTable = define<IPerson>("persons").build({ type: DPerson });
+// const define = <T extends IRecord<any>>(name: string): IBuilder<T> => {
+//   throw new Error();
+// };
+
+// const MyTable = define<IPerson>("persons").build({ type: DPerson });
 
 // const Person = db.define(Person)
 
