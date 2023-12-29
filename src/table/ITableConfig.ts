@@ -10,6 +10,9 @@ export interface ITableConfig<
   TRecord extends IRecord<IdType>,
   TTable extends ITable<TRecord>
 > {
+  /**
+   * Defines a separate table type, which can contain relations.
+   */
   readonly type?: TableConstructor<TRecord, TTable>;
 
   /**
