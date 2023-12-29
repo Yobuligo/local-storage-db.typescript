@@ -52,7 +52,9 @@ class DPerson extends Table<IPerson> {
   /**
    * Returns the cars of the current person
    */
-  readonly cars = this.manyToMany(DCard)
+  readonly cars = this.manyToMany(DCard);
+
+  readonly identityCard = this.oneToOne(DIdentityCard);
 }
 
 class DDriverLicense extends Table<IDriverLicense> {}
@@ -61,12 +63,11 @@ class DIdentityCard extends Table<IIdentityCard> {}
 
 class DCertificate extends Table<ICertificate> {}
 
-class DCard extends Table<ICar>{}
+class DCard extends Table<ICar> {}
 
 const db = new Database("demo");
 const Task = db.define<ITask>("tasks").build({ tableType: DTask });
 const Person = db.define<IPerson>("persons").build({ tableType: DPerson });
-Person.
 
 // type IConfig<TRecord extends IRecord<IdType>, TTable extends Table<TRecord>> = {
 //   type?: TableConstructor<TRecord, TTable>;
