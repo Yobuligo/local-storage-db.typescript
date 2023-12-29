@@ -3,6 +3,9 @@ import { IIdGenerator } from "../idGenerator/IIdGenerator";
 import { IRecord } from "../record/IRecord";
 import { IRecordDetails } from "../record/IRecordDetails";
 import { RecordUtils } from "../record/RecordUtils";
+import { IManyToMany } from "../relations/IManyToMany";
+import { IOneToMany } from "../relations/IOneToMany";
+import { IOneToOne } from "../relations/IOneToOne";
 import { ISelectOptions } from "../select/ISelectOptions";
 import { IStorage } from "../storage/IStorage";
 import { IdType } from "../types/IdType";
@@ -10,6 +13,7 @@ import { IWhere } from "../where/IWhere";
 import { ITable } from "./ITable";
 import { ITableConfig } from "./ITableConfig";
 import { IUpdateResult } from "./IUpdateResult";
+import { TableConstructor } from "./TableConstructor";
 
 /**
  * This class represents each type of table.
@@ -118,6 +122,27 @@ export class Table<TRecord extends IRecord<IdType>> implements ITable<TRecord> {
       this.storage.write(records);
     }
     return updateResult;
+  }
+
+  protected manyToMany<
+    TTarget extends IRecord<IdType>,
+    TTable extends ITable<TTarget>
+  >(type: TableConstructor<TTarget, TTable>): IManyToMany<TRecord, TTarget> {
+    throw new Error();
+  }
+
+  protected oneToMany<
+    TTarget extends IRecord<IdType>,
+    TTable extends ITable<TTarget>
+  >(type: TableConstructor<TTarget, TTable>): IOneToMany<TRecord, TTarget> {
+    throw new Error();
+  }
+
+  protected oneToOne<
+    TTarget extends IRecord<IdType>,
+    TTable extends ITable<TTarget>
+  >(type: TableConstructor<TTarget, TTable>): IOneToOne<TRecord, TTarget> {
+    throw new Error();
   }
 
   private insertRecords(recordDetails: IRecordDetails<TRecord>[]): TRecord[] {
