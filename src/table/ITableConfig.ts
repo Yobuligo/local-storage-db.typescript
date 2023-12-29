@@ -13,7 +13,7 @@ export interface ITableConfig<
   /**
    * Defines a separate table type, which can contain relations.
    */
-  readonly type?: TableConstructor<TRecord, TTable>;
+  readonly tableType?: TableConstructor<TRecord, TTable>;
 
   /**
    * Defines if timestamps for createdAt and changedAt are handled by the api.

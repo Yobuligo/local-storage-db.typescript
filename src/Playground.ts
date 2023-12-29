@@ -28,8 +28,8 @@ class DPerson extends Table<IPerson> {
 }
 
 const db = new Database("demo");
-const Task = db.define<ITask>("tasks").build({ type: DTask });
-const Person = db.define<IPerson>("persons").build({ type: DPerson });
+const Task = db.define<ITask>("tasks").build({ tableType: DTask });
+const Person = db.define<IPerson>("persons").build({ tableType: DPerson });
 
 // type IConfig<TRecord extends IRecord<IdType>, TTable extends Table<TRecord>> = {
 //   type?: TableConstructor<TRecord, TTable>;
