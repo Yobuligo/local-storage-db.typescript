@@ -11,9 +11,9 @@ export interface ITableConfig<
   TTable extends ITable<TRecord>
 > {
   /**
-   * Defines a separate table type, which can contain relations.
+   * Returns a table definition which contains specific relations.
    */
-  readonly tableType?: TableConstructor<TRecord, TTable>;
+  readonly tableDefinition?: TableConstructor<TRecord, TTable>;
 
   /**
    * Defines if timestamps for createdAt and changedAt are handled by the api.
